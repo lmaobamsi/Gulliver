@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🌟 Ronaldo's Great Escape! 🌟</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka+One&family=Nunito:wght@700;900&family=Boogaloo&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold: #FFD700;
+      --red: #E8001D;
+      --blue: #003DA5;
+      --green: #00A550;
+      --white: #FFFFFF;
+      --dark: #1a1a2e;
+      --orange: #FF6B00;
+      --pink: #FF3CAC;
+      --sky: #00D4FF;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Fredoka One', cursive;
+      background: var(--dark);
+      color: var(--white);
+      overflow-x: hidden;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='%23FFD700' stroke='%23E8001D' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23003DA5'/%3E%3C/svg%3E") 16 16, auto;
+    }
+
+    /* ── STARFIELD BG ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(232,0,29,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(0,61,165,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(255,215,0,0.05) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── FLOATING BALLS BG ── */
+    .bg-balls {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .bg-ball {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.07;
+      animation: floatBall linear infinite;
+    }
+
+    @keyframes floatBall {
+      0%   { transform: translateY(110vh) rotate(0deg); }
+      100% { transform: translateY(-20vh) rotate(720deg); }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    .hero-badge {
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      color: var(--dark);
+      font-family: 'Boogaloo', cursive;
+      font-size: 1rem;
+      padding: 0.4rem 1.2rem;
+      border-radius: 50px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      animation: bounceIn 0.8s ease;
+      display: inline-block;
+    }
+
+    .hero-title {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      line-height: 1;
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 40%, var(--red) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+      filter: drop-shadow(0 4px 20px rgba(255,215,0,0.4));
+      animation: titlePop 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+    }
+
+    .hero-title span {
+      display: block;
+      font-size: clamp(4rem, 14vw, 11rem);
+      background: linear-gradient(135deg, #fff 0%, var(--sky) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(1.1rem, 3vw, 1.6rem);
+      font-weight: 900;
+      color: rgba(255,255,255,0.85);
+      margin-top: 1rem;
+      animation: fadeUp 1s ease 0.6s both;
+    }
+
+    /* ── FIELD ── */
+    .field-scene {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 900px;
+      margin: 2rem auto;
+      height: 200px;
+      background: linear-gradient(180deg, #1a7a2a 0%, #22a832 40%, #1a7a2a 100%);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 4px solid var(--white);
+      box-shadow: 0 0 60px rgba(0,200,80,0.3), inset 0 0 40px rgba(0,0,0,0.3);
+    }
+
+    /* field stripes */
+    .field-scene::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 60px,
+        rgba(255,255,255,0.04) 60px,
+        rgba(255,255,255,0.04) 120px
+      );
+    }
+
+    /* center line */
+    .field-scene::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: rgba(255,255,255,0.3);
+      transform: translateX(-50%);
+    }
+
+    /* ── CHASE ANIMATION ── */
+    .chase-track {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      gap: 0;
+    }
+
+    .player-emoji {
+      position: absolute;
+      bottom: 10px;
+      font-size: 3.5rem;
+      animation: runAcross 6s linear infinite;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+    }
+
+    .ronaldo-char {
+      animation: runAcross 6s linear infinite;
+      z-index: 3;
+    }
+
+    .messi-char {
+      animation: runAcross 6s linear infinite;
+      animation-delay: 0.9s;
+      z-index: 2;
+    }
+
+    .chaser1 {
+      animation: runAcross 6s linear infinite;
+      animation-delay: 1.8s;
+      z-index: 1;
+      font-size: 2.8rem;
+    }
+
+    .chaser2 {
+      animation: runAcross 6s linear infinite;
+      animation-delay: 2.4s;
+      z-index: 1;
+      font-size: 2.5rem;
+    }
+
+    @keyframes runAcross {
+      0%   { transform: translateX(-100px) scaleX(1); }
+      49%  { transform: translateX(calc(100vw + 100px)) scaleX(1); }
+      50%  { transform: translateX(calc(100vw + 100px)) scaleX(-1); opacity: 0; }
+      51%  { transform: translateX(calc(100vw + 100px)) scaleX(-1); opacity: 1; }
+      99%  { transform: translateX(-100px) scaleX(-1); }
+      100% { transform: translateX(-100px) scaleX(1); }
+    }
+
+    /* ball bounce on field */
+    .field-ball {
+      position: absolute;
+      font-size: 2rem;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: ballBounce 1s ease-in-out infinite;
+    }
+
+    @keyframes ballBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(-30px); }
+    }
+
+    /* ── SECTION STYLES ── */
+    section {
+      position: relative;
+      z-index: 1;
+      max-width: 1000px;
+      margin: 0 auto 4rem;
+      padding: 0 1.5rem;
+    }
+
+    .section-title {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      letter-spacing: 3px;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    /* ── VS CARD ── */
+    .vs-section { margin-bottom: 4rem; }
+
+    .vs-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .player-card {
+      flex: 1;
+      min-width: 260px;
+      max-width: 340px;
+      border-radius: 24px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .player-card:hover {
+      transform: translateY(-10px) scale(1.02);
+    }
+
+    .ronaldo-card {
+      background: linear-gradient(135deg, #1a0000, #4a0000, #8B0000);
+      border: 3px solid var(--gold);
+      box-shadow: 0 10px 40px rgba(232,0,29,0.5), 0 0 80px rgba(232,0,29,0.2);
+    }
+
+    .ronaldo-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 60%, rgba(255,215,0,0.1));
+      pointer-events: none;
+    }
+
+    .messi-card {
+      background: linear-gradient(135deg, #000a2e, #001a5e, #003DA5);
+      border: 3px solid var(--sky);
+      box-shadow: 0 10px 40px rgba(0,61,165,0.5), 0 0 80px rgba(0,212,255,0.2);
+    }
+
+    .vs-badge {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bangers', cursive;
+      font-size: 1.6rem;
+      color: var(--dark);
+      flex-shrink: 0;
+      animation: vsPulse 1.5s ease-in-out infinite;
+      box-shadow: 0 0 30px rgba(255,215,0,0.6);
+    }
+
+    @keyframes vsPulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.15) rotate(5deg); }
+    }
+
+    .player-emoji-big {
+      font-size: 5rem;
+      display: block;
+      margin-bottom: 0.5rem;
+      animation: playerBounce 2s ease-in-out infinite;
+    }
+
+    @keyframes playerBounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    .player-name {
+      font-family: 'Bangers', cursive;
+      font-size: 2.8rem;
+      letter-spacing: 2px;
+    }
+
+    .ronaldo-card .player-name { color: var(--gold); }
+    .messi-card .player-name { color: var(--sky); }
+
+    .player-title {
+      font-family: 'Boogaloo', cursive;
+      font-size: 1.1rem;
+      opacity: 0.85;
+      margin-bottom: 1rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+
+    .stat-box {
+      background: rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 0.6rem;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .stat-num {
+      font-family: 'Bangers', cursive;
+      font-size: 1.8rem;
+      line-height: 1;
+      display: block;
+    }
+
+    .ronaldo-card .stat-num { color: var(--gold); }
+    .messi-card .stat-num { color: var(--sky); }
+
+    .stat-label {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── STORY SECTION ── */
+    .story-section {}
+
+    .story-box {
+      background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,107,0,0.05));
+      border: 2px solid rgba(255,215,0,0.3);
+      border-radius: 24px;
+      padding: 2.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .story-box:hover {
+      transform: translateX(8px);
+    }
+
+    .story-box::before {
+      content: attr(data-emoji);
+      position: absolute;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 4rem;
+      opacity: 0.15;
+    }
+
+    .story-box h3 {
+      font-family: 'Bangers', cursive;
+      font-size: 2rem;
+      color: var(--gold);
+      letter-spacing: 2px;
+      margin-bottom: 0.6rem;
+    }
+
+    .story-box p {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.88);
+    }
+
+    /* ── POWERS SECTION ── */
+    .powers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .power-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      border: 2px solid rgba(255,255,255,0.1);
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+
+    .power-card:hover {
+      background: rgba(255,215,0,0.1);
+      border-color: var(--gold);
+      transform: translateY(-6px) rotate(-1deg);
+      box-shadow: 0 15px 40px rgba(255,215,0,0.2);
+    }
+
+    .power-icon { font-size: 3rem; margin-bottom: 0.5rem; display: block; }
+
+    .power-card h4 {
+      font-family: 'Bangers', cursive;
+      font-size: 1.4rem;
+      color: var(--gold);
+      letter-spacing: 1px;
+      margin-bottom: 0.3rem;
+    }
+
+    .power-card p {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      opacity: 0.75;
+      line-height: 1.4;
+    }
+
+    /* ── CHASE COUNTDOWN ── */
+    .chase-section {
+      text-align: center;
+    }
+
+    .countdown-board {
+      background: linear-gradient(135deg, #0d0d1a, #1a0d2e);
+      border: 3px solid var(--pink);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 0 0 60px rgba(255,60,172,0.3), inset 0 0 40px rgba(0,0,0,0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .countdown-board::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(transparent 270deg, rgba(255,60,172,0.08) 360deg);
+      animation: rotateGlow 4s linear infinite;
+    }
+
+    @keyframes rotateGlow {
+      100% { transform: rotate(360deg); }
+    }
+
+    .chase-emoji-row {
+      font-size: 3rem;
+      margin: 1.5rem 0;
+      letter-spacing: 0.5rem;
+      animation: shakeRow 0.5s ease-in-out infinite alternate;
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes shakeRow {
+      from { transform: translateX(-4px); }
+      to   { transform: translateX(4px); }
+    }
+
+    .distance-bar-wrap {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50px;
+      height: 28px;
+      margin: 1rem auto;
+      max-width: 500px;
+      overflow: hidden;
+    }
+
+    .distance-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--gold), var(--orange));
+      border-radius: 50px;
+      animation: barGrow 2s ease-in-out infinite alternate;
+      position: relative;
+    }
+
+    .distance-bar::after {
+      content: '⚡ RONALDO IS ESCAPING!';
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.6rem;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      color: var(--dark);
+      white-space: nowrap;
+    }
+
+    @keyframes barGrow {
+      from { width: 60%; }
+      to   { width: 95%; }
+    }
+
+    .chase-msg {
+      font-family: 'Bangers', cursive;
+      font-size: 2rem;
+      color: var(--pink);
+      letter-spacing: 2px;
+      position: relative;
+      z-index: 1;
+      animation: blink 1.2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    /* ── TROPHIES ── */
+    .trophy-row {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .trophy-item {
+      background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,107,0,0.05));
+      border: 2px solid rgba(255,215,0,0.4);
+      border-radius: 16px;
+      padding: 1rem 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      min-width: 130px;
+    }
+
+    .trophy-item:hover {
+      background: rgba(255,215,0,0.2);
+      transform: scale(1.08) rotate(2deg);
+      box-shadow: 0 10px 30px rgba(255,215,0,0.3);
+    }
+
+    .trophy-icon { font-size: 2.5rem; display: block; }
+    .trophy-name {
+      font-family: 'Boogaloo', cursive;
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-top: 0.3rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 3rem 1rem;
+      background: linear-gradient(180deg, transparent, rgba(0,0,0,0.5));
+    }
+
+    .footer-emoji { font-size: 3rem; animation: spin 3s linear infinite; display: inline-block; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    .footer-text {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      color: rgba(255,255,255,0.6);
+      margin-top: 0.8rem;
+      font-size: 1rem;
+    }
+
+    .footer-title {
+      font-family: 'Bangers', cursive;
+      font-size: 2rem;
+      color: var(--gold);
+      letter-spacing: 3px;
+      margin-bottom: 0.3rem;
+    }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── KEYFRAMES ── */
+    @keyframes bounceIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    @keyframes titlePop {
+      from { transform: scale(0.3) rotate(-5deg); opacity: 0; }
+      to   { transform: scale(1)   rotate(0deg);  opacity: 1; }
+    }
+    @keyframes fadeUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    /* ── TICKER ── */
+    .ticker-wrap {
+      background: linear-gradient(90deg, var(--red), var(--blue));
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 0.7rem 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ticker-inner {
+      display: inline-block;
+      animation: ticker 18s linear infinite;
+    }
+
+    .ticker-inner span {
+      font-family: 'Boogaloo', cursive;
+      font-size: 1.1rem;
+      padding: 0 2rem;
+      letter-spacing: 1px;
+    }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── SCORE BOARD ── */
+    .scoreboard {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .score-team {
+      text-align: center;
+    }
+
+    .score-name {
+      font-family: 'Bangers', cursive;
+      font-size: 1.6rem;
+      letter-spacing: 2px;
+    }
+
+    .score-num {
+      font-family: 'Bangers', cursive;
+      font-size: 5rem;
+      line-height: 1;
+      display: block;
+      animation: scoreGlow 2s ease-in-out infinite alternate;
+    }
+
+    .score-cr .score-num { color: var(--gold); text-shadow: 0 0 30px rgba(255,215,0,0.8); }
+    .score-m  .score-num { color: var(--sky);  text-shadow: 0 0 30px rgba(0,212,255,0.8); }
+
+    @keyframes scoreGlow {
+      from { filter: brightness(1); }
+      to   { filter: brightness(1.4); }
+    }
+
+    .score-divider {
+      font-family: 'Bangers', cursive;
+      font-size: 3rem;
+      opacity: 0.5;
+    }
+
+    /* ── FAN SECTION ── */
+    .fan-box {
+      background: rgba(255,255,255,0.04);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .fan-vote {
+      background: transparent;
+      border: 3px solid;
+      border-radius: 50px;
+      padding: 0.8rem 2rem;
+      font-family: 'Bangers', cursive;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--white);
+    }
+
+    .fan-vote.ronaldo-btn { border-color: var(--gold); }
+    .fan-vote.ronaldo-btn:hover, .fan-vote.ronaldo-btn.active {
+      background: var(--gold);
+      color: var(--dark);
+      box-shadow: 0 0 30px rgba(255,215,0,0.6);
+      transform: scale(1.1);
+    }
+
+    .fan-vote.messi-btn { border-color: var(--sky); }
+    .fan-vote.messi-btn:hover, .fan-vote.messi-btn.active {
+      background: var(--sky);
+      color: var(--dark);
+      box-shadow: 0 0 30px rgba(0,212,255,0.6);
+      transform: scale(1.1);
+    }
+
+    .vote-result {
+      width: 100%;
+      text-align: center;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      min-height: 2rem;
+      color: var(--gold);
+      animation: fadeUp 0.5s ease;
+    }
+
+    /* ── CONFETTI ── */
+    .confetti-piece {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 9999;
+      animation: confettiFall 3s ease-in forwards;
+    }
+
+    @keyframes confettiFall {
+      0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background floating balls -->
+  <div class="bg-balls" id="bgBalls"></div>
+
+  <!-- ── TICKER ── -->
+  <div class="ticker-wrap">
+    <div class="ticker-inner">
+      <span>⚡ RONALDO IS RUNNING!</span>
+      <span>😤 MESSI IS CHASING!</span>
+      <span>⚽ SOCCER LEGENDS CLASH!</span>
+      <span>🏆 WHO WILL WIN?!</span>
+      <span>🔥 THE GREATEST RIVALRY EVER!</span>
+      <span>💨 RONALDO'S TOO FAST!</span>
+      <span>😤 MESSI WON'T GIVE UP!</span>
+      <span>⚡ RONALDO IS RUNNING!</span>
+      <span>😤 MESSI IS CHASING!</span>
+      <span>⚽ SOCCER LEGENDS CLASH!</span>
+      <span>🏆 WHO WILL WIN?!</span>
+      <span>🔥 THE GREATEST RIVALRY EVER!</span>
+      <span>💨 RONALDO'S TOO FAST!</span>
+      <span>😤 MESSI WON'T GIVE UP!</span>
+    </div>
+  </div>
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <div class="hero-badge">🌟 The Ultimate Football Adventure 🌟</div>
+    <h1 class="hero-title">
+      RONALDO'S
+      <span>GREAT ESCAPE!</span>
+    </h1>
+    <p class="hero-subtitle">
+      🏃 Everyone is chasing him… and Messi is his biggest enemy! ⚽😤
+    </p>
+
+    <!-- ── FIELD SCENE ── -->
+    <div class="field-scene" style="margin-top:2.5rem;">
+      <div class="player-emoji ronaldo-char" style="bottom:18px;">🦸</div>
+      <div class="player-emoji messi-char"   style="bottom:18px; font-size:3rem;">😤</div>
+      <div class="player-emoji chaser1"      style="bottom:18px;">👮</div>
+      <div class="player-emoji chaser2"      style="bottom:14px; font-size:2.5rem;">🧑‍🤝‍🧑</div>
+      <div class="field-ball">⚽</div>
+    </div>
+    <p style="font-family:'Boogaloo',cursive; color:rgba(255,255,255,0.5); margin-top:0.5rem; font-size:0.95rem;">
+      🦸 = Ronaldo &nbsp;|&nbsp; 😤 = Messi &nbsp;|&nbsp; 👮 = Everyone chasing!
+    </p>
+  </div>
+
+  <!-- ── VS SECTION ── -->
+  <section class="vs-section reveal">
+    <h2 class="section-title" style="background:linear-gradient(135deg,var(--gold),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+      ⚡ THE RIVALRY ⚡
+    </h2>
+    <div class="vs-wrapper">
+
+      <div class="player-card ronaldo-card">
+        <span class="player-emoji-big">🦸‍♂️</span>
+        <div class="player-name">RONALDO</div>
+        <div class="player-title">🌟 The Chosen One — CR7 🌟</div>
+        <div class="stats-grid">
+          <div class="stat-box"><span class="stat-num">900+</span><div class="stat-label">Career Goals</div></div>
+          <div class="stat-box"><span class="stat-num">5</span><div class="stat-label">Ballon d'Or</div></div>
+          <div class="stat-box"><span class="stat-num">💨</span><div class="stat-label">Super Speed</div></div>
+          <div class="stat-box"><span class="stat-num">🦅</span><div class="stat-label">SIUUU Jump</div></div>
+        </div>
+      </div>
+
+      <div class="vs-badge">VS</div>
+
+      <div class="player-card messi-card">
+        <span class="player-emoji-big">😤</span>
+        <div class="player-name">MESSI</div>
+        <div class="player-title">🐐 The Goat… But Chasing! 🐐</div>
+        <div class="stats-grid">
+          <div class="stat-box"><span class="stat-num">850+</span><div class="stat-label">Career Goals</div></div>
+          <div class="stat-box"><span class="stat-num">8</span><div class="stat-label">Ballon d'Or</div></div>
+          <div class="stat-box"><span class="stat-num">🪄</span><div class="stat-label">Magic Dribble</div></div>
+          <div class="stat-box"><span class="stat-num">😤</span><div class="stat-label">Won't Give Up</div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── STORY SECTION ── -->
+  <section class="story-section reveal">
+    <h2 class="section-title" style="color:var(--orange);">📖 THE STORY SO FAR...</h2>
+
+    <div class="story-box" data-emoji="🦸">
+      <h3>🚀 Chapter 1: Ronaldo Escapes!</h3>
+      <p>One sunny day on the biggest football field in the world, Cristiano Ronaldo grabbed the ball and started running. He was SO fast that everyone just stood there watching. Then the chase began!</p>
+    </div>
+
+    <div class="story-box" data-emoji="😤">
+      <h3>👿 Chapter 2: Messi Gets Angry!</h3>
+      <p>Messi — Ronaldo's BIGGEST enemy — saw him running and got super mad! "He thinks he can just run away?!" Messi shouted, and started chasing him with all his magic dribble powers. He even pulled out his secret weapon: the ANKLE BREAKER dribble! 🪄</p>
+    </div>
+
+    <div class="story-box" data-emoji="👮">
+      <h3>🌍 Chapter 3: Everyone Joins The Chase!</h3>
+      <p>Referees, fans, coaches, even the ball boy — EVERYONE started chasing Ronaldo! The whole stadium turned into one giant chase scene. But Ronaldo just said "SIUUUUU!" and kept running faster and faster! 💨</p>
+    </div>
+
+    <div class="story-box" data-emoji="🏆">
+      <h3>🎉 Chapter 4: Who Will Catch Him?!</h3>
+      <p>The chase is STILL going on! Nobody has caught Ronaldo yet. Messi is getting tired but he REFUSES to stop. Can anyone in the world catch the world's fastest footballer? Only YOU can decide! 🌟</p>
+    </div>
+  </section>
+
+  <!-- ── CHASE LIVE ── -->
+  <section class="chase-section reveal">
+    <h2 class="section-title" style="color:var(--pink);">🔴 LIVE CHASE TRACKER</h2>
+    <div class="countdown-board">
+      <p style="font-family:'Boogaloo',cursive; font-size:1.1rem; opacity:0.7; position:relative; z-index:1;">DISTANCE BETWEEN RONALDO AND MESSI</p>
+      <div class="chase-emoji-row">😤💨💨💨💨🦸‍♂️⚡</div>
+      <div class="distance-bar-wrap">
+        <div class="distance-bar"></div>
+      </div>
+      <p class="chase-msg">🚨 RONALDO IS PULLING AWAY! 🚨</p>
+      <p style="font-family:'Nunito',sans-serif; font-weight:900; font-size:0.9rem; opacity:0.6; margin-top:1rem; position:relative; z-index:1;">Last updated: RIGHT NOW • Messi stamina: 42% 😰</p>
+    </div>
+  </section>
+
+  <!-- ── RONALDO POWERS ── -->
+  <section class="reveal">
+    <h2 class="section-title" style="color:var(--gold);">⚡ RONALDO'S SUPER POWERS</h2>
+    <div class="powers-grid">
+      <div class="power-card">
+        <span class="power-icon">💨</span>
+        <h4>Lightning Speed</h4>
+        <p>Runs faster than anyone on the planet. Even Messi can't keep up!</p>
+      </div>
+      <div class="power-card">
+        <span class="power-icon">🦅</span>
+        <h4>SIUUU Jump</h4>
+        <p>His legendary celebration jump can reach rooftops! 🏠</p>
+      </div>
+      <div class="power-card">
+        <span class="power-icon">🎯</span>
+        <h4>Laser Shot</h4>
+        <p>His shots are so powerful they break through walls and goals! 💥</p>
+      </div>
+      <div class="power-card">
+        <span class="power-icon">💪</span>
+        <h4>Super Strength</h4>
+        <p>He does 3,000 sit-ups a day! He's basically a superhero 🦸</p>
+      </div>
+      <div class="power-card">
+        <span class="power-icon">🧠</span>
+        <h4>Genius Brain</h4>
+        <p>Can predict where the ball goes before anyone else sees it! 🔮</p>
+      </div>
+      <div class="power-card">
+        <span class="power-icon">🌟</span>
+        <h4>Star Power</h4>
+        <p>So famous that cameras follow him everywhere — even when running! 📸</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TROPHIES ── -->
+  <section class="reveal">
+    <h2 class="section-title" style="color:var(--gold);">🏆 RONALDO'S TROPHIES</h2>
+    <div class="trophy-row">
+      <div class="trophy-item"><span class="trophy-icon">🏆</span><div class="trophy-name">Champions League × 5</div></div>
+      <div class="trophy-item"><span class="trophy-icon">🌍</span><div class="trophy-name">Euro Cup × 1</div></div>
+      <div class="trophy-item"><span class="trophy-icon">⚽</span><div class="trophy-name">Premier League × 3</div></div>
+      <div class="trophy-item"><span class="trophy-icon">🥇</span><div class="trophy-name">La Liga × 2</div></div>
+      <div class="trophy-item"><span class="trophy-icon">🌟</span><div class="trophy-name">Ballon d'Or × 5</div></div>
+      <div class="trophy-item"><span class="trophy-icon">👑</span><div class="trophy-name">Serie A × 3</div></div>
+    </div>
+  </section>
+
+  <!-- ── SCOREBOARD ── -->
+  <section class="reveal">
+    <h2 class="section-title" style="color:var(--white);">📊 CAREER GOALS SCOREBOARD</h2>
+    <div class="scoreboard">
+      <div class="score-team score-cr">
+        <div class="score-name" style="color:var(--gold);">🦸 CR7</div>
+        <span class="score-num" id="crScore">0</span>
+        <div style="font-family:'Boogaloo',cursive; opacity:0.6;">GOALS</div>
+      </div>
+      <div class="score-divider">—</div>
+      <div class="score-team score-m">
+        <div class="score-name" style="color:var(--sky);">😤 MESSI</div>
+        <span class="score-num" id="mScore">0</span>
+        <div style="font-family:'Boogaloo',cursive; opacity:0.6;">GOALS</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAN VOTE ── -->
+  <section class="reveal">
+    <h2 class="section-title" style="color:var(--pink);">🗳️ WHO'S YOUR FAVOURITE?</h2>
+    <div class="fan-box">
+      <button class="fan-vote ronaldo-btn" onclick="vote('ronaldo')">⚡ RONALDO! ⚡</button>
+      <button class="fan-vote messi-btn"   onclick="vote('messi')"  >🐐 MESSI! 🐐</button>
+      <div class="vote-result" id="voteResult"></div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <span class="footer-emoji">⚽</span>
+    <div class="footer-title">RONALDO'S GREAT ESCAPE!</div>
+    <p class="footer-text">Made with ❤️ for the biggest football fan ever • The chase never ends! 🏃‍♂️💨</p>
+  </footer>
+
+  <script>
+    /* ── BG BALLS ── */
+    const colors = ['#FFD700','#E8001D','#003DA5','#FF6B00','#00D4FF','#FF3CAC','#00A550'];
+    const ballContainer = document.getElementById('bgBalls');
+    for (let i = 0; i < 18; i++) {
+      const b = document.createElement('div');
+      b.className = 'bg-ball';
+      const size = Math.random() * 120 + 40;
+      b.style.cssText = `
+        width:${size}px; height:${size}px;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        left:${Math.random()*100}%;
+        animation-duration:${Math.random()*20+10}s;
+        animation-delay:${Math.random()*-20}s;
+      `;
+      ballContainer.appendChild(b);
+    }
+
+    /* ── SCROLL REVEAL ── */
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    /* ── SCORE COUNTER ANIMATION ── */
+    function animateCount(el, target, duration) {
+      let start = 0;
+      const step = Math.ceil(target / (duration / 16));
+      const timer = setInterval(() => {
+        start = Math.min(start + step, target);
+        el.textContent = start;
+        if (start >= target) clearInterval(timer);
+      }, 16);
+    }
+
+    const crEl = document.getElementById('crScore');
+    const mEl  = document.getElementById('mScore');
+    const scoreSection = crEl.closest('section');
+    const scoreObs = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        animateCount(crEl, 900, 1800);
+        animateCount(mEl,  857, 1800);
+        scoreObs.disconnect();
+      }
+    }, { threshold: 0.3 });
+    scoreObs.observe(scoreSection);
+
+    /* ── VOTE ── */
+    const votes = { ronaldo: 0, messi: 0 };
+    const msgs = {
+      ronaldo: ["🦸 SIUUUUU! CR7 FAN DETECTED! ⚡", "⚡ You picked the fastest man alive!", "🌟 RONALDO NATION GROWS STRONGER!"],
+      messi:   ["🐐 You chose the GOAT! Good taste!", "🪄 Messi fan spotted! Dribble dribble!", "🔵⬜ MESSI ARMY UNITE!"]
+    };
+    function vote(player) {
+      votes[player]++;
+      document.querySelectorAll('.fan-vote').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.${player}-btn`).classList.add('active');
+      const pool = msgs[player];
+      document.getElementById('voteResult').textContent = pool[Math.floor(Math.random()*pool.length)];
+      spawnConfetti();
+    }
+
+    /* ── CONFETTI ── */
+    function spawnConfetti() {
+      for (let i = 0; i < 40; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti-piece';
+        c.style.cssText = `
+          left:${Math.random()*100}vw;
+          top:-10px;
+          background:${colors[Math.floor(Math.random()*colors.length)]};
+          width:${Math.random()*12+6}px;
+          height:${Math.random()*12+6}px;
+          border-radius:${Math.random()>0.5?'50%':'2px'};
+          animation-delay:${Math.random()*1}s;
+          animation-duration:${Math.random()*2+2}s;
+        `;
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 4000);
+      }
+    }
+  </script>
+</body>
+</html>
